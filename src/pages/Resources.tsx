@@ -1,0 +1,274 @@
+import { FileText, Download, Video, BookOpen, Search, Loader2 } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import PageLayout from "@/components/layout/PageLayout";
+import PageHero from "@/components/shared/PageHero";
+import SubscriptionSection from "@/components/shared/SubscriptionSection";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+
+import focusCivic from "@/assets/focus-civic.jpg";
+
+const categories = ["All", "Reports", "E-Books", "Videos", "Toolkits", "Policy Briefs"];
+
+const resources = [
+  {
+    id: 1,
+    title: "Election Observation Report 2023",
+    description: "Comprehensive analysis of the 2023 general elections in Nigeria, including findings from over 10,000 citizen observers.",
+    type: "PDF Report",
+    category: "Reports",
+    icon: FileText,
+    downloads: "2.5K",
+    size: "4.2 MB",
+    date: "March 2024",
+  },
+  {
+    id: 2,
+    title: "Citizen's Guide to Voting",
+    description: "Everything you need to know about your voting rights, the electoral process, and how to participate effectively.",
+    type: "E-Book",
+    category: "E-Books",
+    icon: BookOpen,
+    downloads: "8.1K",
+    size: "2.8 MB",
+    date: "January 2024",
+  },
+  {
+    id: 3,
+    title: "Democracy Explained Series",
+    description: "A 12-episode video series explaining key concepts of democratic governance in simple, accessible language.",
+    type: "Video Series",
+    category: "Videos",
+    icon: Video,
+    downloads: "15K Views",
+    size: "12 Episodes",
+    date: "December 2023",
+  },
+  {
+    id: 4,
+    title: "Legislative Tracking Toolkit",
+    description: "Tools and templates for civil society organizations to monitor legislative activities and hold representatives accountable.",
+    type: "PDF Guide",
+    category: "Toolkits",
+    icon: FileText,
+    downloads: "1.2K",
+    size: "1.5 MB",
+    date: "November 2023",
+  },
+  {
+    id: 5,
+    title: "Youth Political Participation Report",
+    description: "Research findings on barriers and opportunities for youth engagement in Nigerian politics.",
+    type: "PDF Report",
+    category: "Reports",
+    icon: FileText,
+    downloads: "3.2K",
+    size: "3.1 MB",
+    date: "October 2023",
+  },
+  {
+    id: 6,
+    title: "Women in Politics Handbook",
+    description: "A comprehensive guide for women aspiring to run for political office or engage in governance.",
+    type: "E-Book",
+    category: "E-Books",
+    icon: BookOpen,
+    downloads: "5.6K",
+    size: "2.3 MB",
+    date: "September 2023",
+  },
+  {
+    id: 7,
+    title: "Budget Monitoring Guide",
+    description: "Step-by-step instructions for tracking government budgets and expenditures at state and local levels.",
+    type: "Toolkit",
+    category: "Toolkits",
+    icon: FileText,
+    downloads: "2.1K",
+    size: "1.8 MB",
+    date: "August 2023",
+  },
+  {
+    id: 8,
+    title: "Policy Brief: Electoral Reforms",
+    description: "Analysis and recommendations for improving Nigeria's electoral framework based on our observation experience.",
+    type: "Policy Brief",
+    category: "Policy Briefs",
+    icon: FileText,
+    downloads: "1.8K",
+    size: "0.8 MB",
+    date: "July 2023",
+  },
+];
+
+const Resources = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredResources = useMemo(() => {
+    return resources.filter((resource) => {
+      const matchesCategory = selectedCategory === "All" || resource.category === selectedCategory;
+      const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           resource.description.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [selectedCategory, searchQuery]);
+
+  const { displayedItems, hasMore, isLoading, loadMoreRef } = useInfiniteScroll({
+    items: filteredResources,
+    itemsPerPage: 8,
+  });
+
+  return (
+    <PageLayout>
+      <PageHero
+        badge="Resources"
+        title="Knowledge for"
+        titleHighlight="Civic Action"
+        description="Access our comprehensive collection of reports, guides, and educational materials designed to empower citizens and strengthen democratic participation."
+        backgroundImage={focusCivic}
+      />
+
+      {/* Search and Filter */}
+      <section className="py-12 bg-background border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
+            {/* Search */}
+            <div className="relative w-full md:w-96">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search resources..."
+                className="pl-12"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    selectedCategory === category
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Resources Grid */}
+      <section className="py-20 lg:py-28 bg-background">
+        <div className="container mx-auto px-4">
+          {displayedItems.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground text-lg">No resources found matching your criteria.</p>
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
+              >
+                Clear Filters
+              </Button>
+            </div>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {displayedItems.map((resource) => (
+                  <div
+                    key={resource.id}
+                    className="group bg-card rounded-xl p-6 border border-border hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                        <resource.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
+                      </div>
+                      <button className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all">
+                        <Download className="w-5 h-5" />
+                      </button>
+                    </div>
+                    
+                    <span className="inline-block px-2 py-1 bg-muted rounded-md text-xs font-medium text-muted-foreground mb-3">
+                      {resource.category}
+                    </span>
+                    
+                    <h3 className="font-display font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                      {resource.title}
+                    </h3>
+                    
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
+                      {resource.description}
+                    </p>
+                    
+                    <div className="flex items-center justify-between text-sm text-muted-foreground border-t border-border pt-4 mt-auto">
+                      <span>{resource.type}</span>
+                      <span>{resource.size}</span>
+                    </div>
+                    
+                    <div className="text-xs text-muted-foreground mt-2">
+                      <span>{resource.date}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Infinite Scroll Trigger */}
+              <div ref={loadMoreRef} className="flex justify-center mt-12">
+                {isLoading && (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Loading more resources...</span>
+                  </div>
+                )}
+                {!hasMore && displayedItems.length > 0 && (
+                  <p className="text-muted-foreground text-center">
+                    You've reached the end of the resources.
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </section>
+
+      {/* Request Resources Section */}
+      <section className="py-20 lg:py-28 bg-muted/50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <span className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-semibold mb-6">
+              Can't Find What You Need?
+            </span>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
+              Request Custom
+              <span className="text-gradient"> Resources</span>
+            </h2>
+            <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+              If you need specific information or materials for your civic engagement activities, reach out to our team. We're here to support your work.
+            </p>
+            <Button variant="default" size="lg">
+              Contact Our Team
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <SubscriptionSection 
+        variant="primary"
+        title="Stay Updated with New Resources"
+        description="Subscribe to receive notifications when we publish new reports, guides, and educational materials."
+      />
+    </PageLayout>
+  );
+};
+
+export default Resources;
