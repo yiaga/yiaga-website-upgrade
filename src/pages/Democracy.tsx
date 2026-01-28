@@ -67,13 +67,13 @@ const Democracy = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="order-2 lg:order-1">
-              <img 
-                src={focusCivic} 
-                alt="Democracy programs" 
+              <img
+                src={focusCivic}
+                alt="Democracy programs"
                 className="rounded-3xl shadow-2xl"
               />
             </div>
-            
+
             <div className="order-1 lg:order-2">
               <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-6">
                 Our Mission
@@ -151,7 +151,7 @@ const Democracy = () => {
               <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
                 {watchingTheVote.description}
               </p>
-              
+
               <ul className="space-y-3 mb-8">
                 {watchingTheVote.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-3">
@@ -160,7 +160,7 @@ const Democracy = () => {
                   </li>
                 ))}
               </ul>
-              
+
               <Link to="/initiatives">
                 <Button variant="hero" size="lg">
                   Learn More
@@ -235,9 +235,11 @@ const Democracy = () => {
             Join thousands of citizens working to strengthen democracy across Africa. Your participation matters.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button variant="default" size="lg">
-              Get Involved
-            </Button>
+            <Link to="/contact">
+              <Button variant="default" size="lg">
+                Get Involved
+              </Button>
+            </Link>
             <Link to="/resources">
               <Button variant="outline" size="lg">
                 Access Resources

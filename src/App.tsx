@@ -16,6 +16,7 @@ import NewsDetail from "./pages/NewsDetail";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import Careers from "./pages/Careers";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 // Admin pages
@@ -53,7 +54,8 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/careers" element={<Careers />} />
-            
+            <Route path="/contact" element={<Contact />} />
+
             {/* Admin Routes */}
             <Route path="/admin/login" element={<Login />} />
             <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
@@ -66,7 +68,7 @@ const App = () => (
               <Route path="careers" element={<ProtectedRoute requiredRoles={['admin']}><CareersManagement /></ProtectedRoute>} />
               <Route path="audit" element={<ProtectedRoute requiredRoles={['admin']}><AuditLogs /></ProtectedRoute>} />
             </Route>
-            
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

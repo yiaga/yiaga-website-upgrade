@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logoWhite from "@/assets/logo-white.jpg";
 
 const navItems = [
   { label: "About", href: "/about" },
@@ -19,6 +20,7 @@ const navItems = [
   { label: "News", href: "/news" },
   { label: "Blog", href: "/blog" },
   { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const Header = () => {
@@ -36,7 +38,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const shouldShowTransparent = isHomePage && !isScrolled;
+  const shouldShowTransparent = isHomePage && !isScrolled && !isMobileMenuOpen;
 
   return (
     <header
@@ -52,7 +54,11 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="flex items-center gap-1">
-              <img src="/logo.png" alt="Yiaga Africa Logo" className="h-10 w-auto" />
+              <img
+                src={shouldShowTransparent ? logoWhite : "/logo.png"}
+                alt="Yiaga Africa Logo"
+                className="h-10 w-auto transition-all duration-300"
+              />
             </div>
           </Link>
 
@@ -110,9 +116,11 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button variant={shouldShowTransparent ? "hero" : "default"} size={shouldShowTransparent ? "lg" : "default"}>
-              Get Involved
-            </Button>
+            <Link to="/contact">
+              <Button variant={shouldShowTransparent ? "hero" : "default"} size={shouldShowTransparent ? "lg" : "default"}>
+                Get Involved
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -159,9 +167,11 @@ const Header = () => {
                   )}
                 </div>
               ))}
-              <Button variant="default" className="mt-4">
-                Get Involved
-              </Button>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button variant="default" className="w-full mt-4">
+                  Get Involved
+                </Button>
+              </Link>
             </div>
           </div>
         )}

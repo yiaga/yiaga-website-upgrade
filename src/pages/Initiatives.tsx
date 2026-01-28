@@ -64,8 +64,8 @@ const Initiatives = () => {
               >
                 <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
                   <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold mb-6 ${initiative.color === 'primary' ? 'bg-primary/10 text-primary' :
-                      initiative.color === 'secondary' ? 'bg-secondary/10 text-secondary' :
-                        'bg-accent/10 text-accent'
+                    initiative.color === 'secondary' ? 'bg-secondary/10 text-secondary' :
+                      'bg-accent/10 text-accent'
                     }`}>
                     {initiative.category}
                   </span>
@@ -107,8 +107,8 @@ const Initiatives = () => {
                     className="rounded-3xl shadow-2xl w-full"
                   />
                   <div className={`absolute -bottom-6 ${index % 2 === 1 ? '-right-6' : '-left-6'} w-24 h-24 rounded-2xl flex items-center justify-center shadow-xl ${initiative.color === 'primary' ? 'bg-primary' :
-                      initiative.color === 'secondary' ? 'bg-secondary' :
-                        'bg-accent'
+                    initiative.color === 'secondary' ? 'bg-secondary' :
+                      'bg-accent'
                     }`}>
                     <span className="text-3xl font-display font-bold text-white">
                       #{index + 1}
@@ -208,9 +208,11 @@ const Initiatives = () => {
             There are many ways to support our work and contribute to strengthening democracy in Africa.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button variant="default" size="lg">
-              Become a Volunteer
-            </Button>
+            <Link to="/contact">
+              <Button variant="default" size="lg">
+                Get Involved
+              </Button>
+            </Link>
             <Link to="/careers">
               <Button variant="outline" size="lg">
                 View Career Opportunities

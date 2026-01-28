@@ -157,15 +157,18 @@ const InitiativeDetail = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4 mt-12 pt-8 border-t border-border">
-                <Button variant="default" size="lg">
-                  Get Involved
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Link to="/resources">
-                  <Button variant="outline" size="lg">
-                    Download Resources
-                  </Button>
-                </Link>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link to="/contact">
+                    <Button variant="default" size="lg">
+                      Get Involved
+                    </Button>
+                  </Link>
+                  <Link to="/careers">
+                    <Button variant="outline" size="lg">
+                      View Career Opportunities
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -211,9 +214,11 @@ const InitiativeDetail = () => {
                 <p className="text-white/80 mb-6 leading-relaxed">
                   Interested in participating or supporting this initiative? Reach out to learn how you can contribute.
                 </p>
-                <Button variant="hero" className="w-full">
-                  Contact Us
-                </Button>
+                <Link to="/contact">
+                  <Button variant="hero" className="w-full">
+                    Contact Us
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -243,8 +248,8 @@ const InitiativeDetail = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
                   <div className="absolute top-4 left-4">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${item.color === 'primary' ? 'bg-primary/90 text-primary-foreground' :
-                        item.color === 'secondary' ? 'bg-secondary/90 text-secondary-foreground' :
-                          'bg-accent/90 text-accent-foreground'
+                      item.color === 'secondary' ? 'bg-secondary/90 text-secondary-foreground' :
+                        'bg-accent/90 text-accent-foreground'
                       }`}>
                       {item.category}
                     </span>

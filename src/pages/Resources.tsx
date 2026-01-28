@@ -1,5 +1,6 @@
 import { FileText, Download, Video, BookOpen, Search, Loader2 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PageLayout from "@/components/layout/PageLayout";
@@ -103,14 +104,22 @@ const resources = [
 ];
 
 const Resources = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam || "All");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    }
+  }, [categoryParam]);
 
   const filteredResources = useMemo(() => {
     return resources.filter((resource) => {
       const matchesCategory = selectedCategory === "All" || resource.category === selectedCategory;
       const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           resource.description.toLowerCase().includes(searchQuery.toLowerCase());
+        resource.description.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [selectedCategory, searchQuery]);
@@ -152,11 +161,10 @@ const Resources = () => {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    selectedCategory === category
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  }`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === category
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
                 >
                   {category}
                 </button>
@@ -172,8 +180,8 @@ const Resources = () => {
           {displayedItems.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg">No resources found matching your criteria.</p>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="mt-4"
                 onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
               >
@@ -196,24 +204,24 @@ const Resources = () => {
                         <Download className="w-5 h-5" />
                       </button>
                     </div>
-                    
+
                     <span className="inline-block px-2 py-1 bg-muted rounded-md text-xs font-medium text-muted-foreground mb-3">
                       {resource.category}
                     </span>
-                    
+
                     <h3 className="font-display font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
                       {resource.title}
                     </h3>
-                    
+
                     <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
                       {resource.description}
                     </p>
-                    
+
                     <div className="flex items-center justify-between text-sm text-muted-foreground border-t border-border pt-4 mt-auto">
                       <span>{resource.type}</span>
                       <span>{resource.size}</span>
                     </div>
-                    
+
                     <div className="text-xs text-muted-foreground mt-2">
                       <span>{resource.date}</span>
                     </div>
@@ -262,7 +270,7 @@ const Resources = () => {
       </section>
 
       {/* CTA Section */}
-      <SubscriptionSection 
+      <SubscriptionSection
         variant="primary"
         title="Stay Updated with New Resources"
         description="Subscribe to receive notifications when we publish new reports, guides, and educational materials."

@@ -1,15 +1,34 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
+import ned from '@/assets/partners/ned.jpg'
+import undp from '@/assets/partners/undp.jpg'
+import eu from '@/assets/partners/eu.jpg'
+import actionaid from '@/assets/partners/actionaid.jpg'
+import fordFoundation from '@/assets/partners/ford-foundation.jpg'
+import luminate from '@/assets/partners/luminate.jpg'
+import ndi from '@/assets/partners/ndi.jpg'
+import ukaid from '@/assets/partners/ukaid.jpg'
+import iri from '@/assets/partners/iri.jpg'
+import usEmbassy from '@/assets/partners/us-embassy.jpg'
+import spotlight from '@/assets/partners/spotlight.jpg'
+import swedishEmbassy from '@/assets/partners/swedish-embassy.jpg'
+import euSdgn from '@/assets/partners/eusdgn.jpg'
+
 
 const partners = [
-  { name: "USAID", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/USAID-Identity.svg/320px-USAID-Identity.svg.png" },
-  { name: "European Union", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/320px-Flag_of_Europe.svg.png" },
-  { name: "MacArthur Foundation", logo: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=200&q=80" },
-  { name: "Ford Foundation", logo: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&q=80" },
-  { name: "Open Society", logo: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=200&q=80" },
-  { name: "DFID", logo: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=200&q=80" },
-  { name: "NDI", logo: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=200&q=80" },
-  { name: "World Bank", logo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" },
+  { name: "NED", logo: ned },
+  { name: "European Union", logo: eu },
+  { name: "Action Aid", logo: actionaid },
+  { name: "Ford Foundation", logo: fordFoundation },
+  { name: "Luminate", logo: luminate },
+  { name: "UNDP", logo: undp },
+  { name: "NDI", logo: ndi },
+  { name: "UK Aid", logo: ukaid },
+  { name: "IRI", logo: iri },
+  { name: "US Embassy", logo: usEmbassy },
+  { name: "Spotlight", logo: spotlight },
+  { name: "Swedish Embassy", logo: swedishEmbassy },
+  { name: "EU SDGN", logo: euSdgn },
 ];
 
 const PartnersCarousel = () => {
@@ -39,7 +58,7 @@ const PartnersCarousel = () => {
         {/* Gradient Overlays */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-muted/30 to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-muted/30 to-transparent z-10" />
-        
+
         {/* First Row - Left to Right */}
         <div className="flex animate-scroll-left mb-6">
           {[...partners, ...partners].map((partner, index) => (
@@ -55,7 +74,7 @@ const PartnersCarousel = () => {
             </div>
           ))}
         </div>
-        
+
         {/* Second Row - Right to Left */}
         <div className="flex animate-scroll-right">
           {[...partners.reverse(), ...partners].map((partner, index) => (

@@ -4,14 +4,18 @@ import { Button } from '@/components/ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
 
+import nvisReport from "@/assets/nvis-report.jpg";
+import ngoSourceEd from "@/assets/ngosource-ed.jpg";
+import discuss from "@/assets/discuss.jpg";
+
 const announcements = [
   {
     id: 1,
-    title: "2024 Election Observation Report Released",
-    description: "Our comprehensive report on the 2024 general elections is now available. The report covers voter turnout, electoral irregularities, and recommendations for future elections.",
-    date: "December 5, 2024",
+    title: "NVIS (National Voting Intentions Survey) Report 1 is released",
+    description: "Our comprehensive survey on national voting intentions is now available. Gain insights into the current political landscape and voter sentiment across the country.",
+    date: "January 28, 2026",
     link: "#",
-    image: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=600&q=80",
+    image: nvisReport,
   },
   {
     id: 2,
@@ -19,36 +23,54 @@ const announcements = [
     description: "Join us for our annual summit bringing together young leaders from across Africa to discuss civic participation, democratic governance, and community development.",
     date: "January 15, 2025",
     link: "#",
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80",
+    image: discuss,
   },
   {
     id: 3,
-    title: "New Partnership with African Union",
-    description: "Yiaga Africa announces strategic partnership with the African Union to strengthen democratic institutions and promote transparent governance across the continent.",
+    title: "Yiaga Africa have acquired ED Certified by NGOsource",
+    description: "We are pleased to announce that Yiaga Africa has achieved Equivalency Determination (ED) certification, further validating our commitment to transparency and global standards.",
     date: "November 28, 2024",
     link: "#",
-    image: "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=600&q=80",
+    image: ngoSourceEd,
   },
 ];
 
+import { api } from '@/services/api';
+
 const AnnouncementSlider = () => {
+  const [data, setData] = useState<any[]>(announcements);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % announcements.length);
-    }, 8000);
-    return () => clearInterval(timer);
+    const fetchAnnouncements = async () => {
+      const result = await api.getAnnouncements();
+      setData(result);
+      setIsLoading(false);
+    };
+    fetchAnnouncements();
   }, []);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % announcements.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + announcements.length) % announcements.length);
+  useEffect(() => {
+    if (data.length === 0) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % data.length);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, [data.length]);
 
-  const current = announcements[currentSlide];
+  const nextSlide = () => data.length > 0 && setCurrentSlide((prev) => (prev + 1) % data.length);
+  const prevSlide = () => data.length > 0 && setCurrentSlide((prev) => (prev - 1 + data.length) % data.length);
+
+  if (isLoading || data.length === 0) {
+    return null;
+  }
+
+  const current = data[currentSlide];
 
   return (
-    <section 
+    <section
       ref={ref}
       className="py-12 bg-gradient-to-r from-secondary/10 via-background to-accent/10 overflow-hidden"
     >
@@ -80,12 +102,12 @@ const AnnouncementSlider = () => {
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent" />
-              
+
               {/* Slide Counter */}
               <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2">
                 <span className="text-2xl font-bold text-primary">{String(currentSlide + 1).padStart(2, '0')}</span>
                 <span className="text-muted-foreground">/</span>
-                <span className="text-muted-foreground">{String(announcements.length).padStart(2, '0')}</span>
+                <span className="text-muted-foreground">{String(data.length).padStart(2, '0')}</span>
               </div>
             </div>
 
@@ -98,15 +120,15 @@ const AnnouncementSlider = () => {
                 <Calendar className="w-4 h-4" />
                 <span className="text-sm">{current.date}</span>
               </div>
-              
+
               <h3 className="text-2xl lg:text-3xl font-display font-bold text-foreground leading-tight">
                 {current.title}
               </h3>
-              
+
               <p className="text-muted-foreground leading-relaxed text-lg">
                 {current.description}
               </p>
-              
+
               <Button className="group bg-primary hover:bg-primary/90 text-primary-foreground">
                 Read More
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -128,16 +150,16 @@ const AnnouncementSlider = () => {
                     <ChevronRight className="w-5 h-5" />
                   </button>
                 </div>
-                
+
                 <div className="flex gap-2">
-                  {announcements.map((_, index) => (
+                  {data.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentSlide(index)}
                       className={cn(
                         "h-2 rounded-full transition-all duration-300",
-                        index === currentSlide 
-                          ? "w-8 bg-primary" 
+                        index === currentSlide
+                          ? "w-8 bg-primary"
                           : "w-2 bg-border hover:bg-muted-foreground"
                       )}
                     />
